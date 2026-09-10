@@ -1,0 +1,59 @@
+{
+  "model": "XGBoost",
+  "features": [
+    "packet_size_mean",
+    "packet_size_std",
+    "packet_size_p90",
+    "iat_mean_ms",
+    "iat_std_ms",
+    "iat_p95_ms",
+    "flow_duration_sec",
+    "bytes_up_down_ratio",
+    "packet_entropy",
+    "mtu_proximity_ratio",
+    "small_packet_ratio"
+  ],
+  "classes": [
+    "Web browsing",
+    "Video streaming",
+    "E-mail",
+    "VoIP",
+    "Bulk File Transfer",
+    "ICMP"
+  ],
+  "label_encoding": {
+    "Web browsing": 0,
+    "Video streaming": 1,
+    "E-mail": 2,
+    "VoIP": 3,
+    "Bulk File Transfer": 4,
+    "ICMP": 5
+  },
+  "total_samples": 6871,
+  "total_captures": 18,
+  "training_samples": 4808,
+  "test_samples": 2063,
+  "training_captures": 12,
+  "test_captures": 6,
+  "test_capture_names": [
+    "full_capture.pcap",
+    "vpn_email2b.pcap",
+    "vpn_ftps_B.pcap",
+    "vpn_netflix_A.pcap",
+    "vpn_voipbuster1b.pcap",
+    "web_02.pcap"
+  ],
+  "random_forest": {
+    "accuracy": 0.7043141056713524,
+    "precision_macro": 0.8413438327142279,
+    "recall_macro": 0.6551311475409837,
+    "f1_macro": 0.6564361245310616
+  },
+  "xgboost": {
+    "accuracy": 0.7096461463887542,
+    "precision_macro": 0.8386616817356564,
+    "recall_macro": 0.8003333333333332,
+    "f1_macro": 0.8078166250359976
+  },
+  "dataset_note": "Real labeled PCAP traffic. Statistical windows were extracted from packet captures. Train/test separation is performed at capture level."
+}

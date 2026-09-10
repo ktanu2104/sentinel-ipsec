@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IPsec VPN Protocol Analyzer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<div class="scan-line"></div>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="logo-mark">IP<span>::</span>SEC</div>
+    <div class="topbar-title">
+      <h1>IPsec VPN Protocol Analyzer</h1>
+      <p class="topbar-sub">AI-Powered Security Assessment Framework &mdash; NTRO / SIH 2026</p>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span class="status-pill" id="apiStatus"><span class="dot"></span>connecting...</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ UPLOAD VIEW ============ -->
+  <section id="uploadView" class="view active">
+    <div class="panel upload-panel">
+      <div class="panel-label">01 &mdash; INPUT</div>
+      <h2>Submit a capture for analysis</h2>
+      <p class="muted">Upload an IPsec/IKE configuration file or packet capture (.conf, .pcap, .log). The framework runs protocol compliance checks, ML-based anomaly detection, and anchors the report on-chain for integrity verification.</p>
+
+      <label class="dropzone" id="dropzone" for="fileInput">
+        <input type="file" id="fileInput" accept=".conf,.pcap,.pcapng,.log,.txt" hidden />
+        <div class="dropzone-icon">&#8593;</div>
+        <div class="dropzone-text">
+          <strong>Drop file here</strong> or click to browse
+          <span id="fileName" class="file-name"></span>
+        </div>
+      </label>
+
+      <div class="field-row">
+        <label class="field-label" for="manualEntry">or paste config snippet directly</label>
+        <textarea id="manualEntry" rows="4" placeholder="ike { proposal { authentication-method pre-shared-keys; dh-group group2; ... } }"></textarea>
+      </div>
+
+      <button id="analyzeBtn" class="btn-primary">
+        <span id="analyzeBtnText">Run Analysis</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ LOADING VIEW ============ -->
+  <section id="loadingView" class="view">
+    <div class="panel loading-panel">
+      <div class="loader-trace">
+        <div class="trace-bar"></div>
+      </div>
+      <div class="loading-log" id="loadingLog"></div>
+    </div>
+  </section>
+
+  <!-- ============ RESULTS VIEW ============ -->
+  <section id="resultsView" class="view">
+
+    <div class="results-grid">
+
+      <!-- Score card -->
+      <div class="panel score-panel">
+        <div class="panel-label">SECURITY SCORE</div>
+        <div class="score-ring-wrap">
+          <svg viewBox="0 0 120 120" class="score-ring">
+            <circle cx="60" cy="60" r="52" class="ring-track" />
+            <circle cx="60" cy="60" r="52" class="ring-fill" id="ringFill" />
+          </svg>
+          <div class="score-value" id="scoreValue">--</div>
+        </div>
+        <div class="score-file" id="scoreFile">--</div>
+        <div class="score-timestamp" id="scoreTimestamp">--</div>
+      </div>
+
+      <!-- Severity breakdown -->
+      <div class="panel breakdown-panel">
+        <div class="panel-label"> FINDINGS BREAKDOWN</div>
+        <canvas id="severityChart" height="140"></canvas>
+      </div>
+     <!-- Protocol intelligence -->
+<div class="panel protocol-panel">
+
+  <div class="panel-label">PROTOCOL INTELLIGENCE</div>
+
+  <div class="protocol-grid">
+
+    <div class="protocol-item">
+      <span class="protocol-key">Protocol</span>
+      <span class="protocol-value detected" id="protocolValue">--</span>
+    </div>
+
+    <div class="protocol-item">
+      <span class="protocol-key">IKE Version</span>
+      <span class="protocol-value detected" id="ikeVersionValue">--</span>
+    </div>
+
+    <div class="protocol-item">
+      <span class="protocol-key">Encryption</span>
+      <span class="protocol-value" id="encryptionValue">--</span>
+    </div>
+
+    <div class="protocol-item">
+      <span class="protocol-key">Key Length</span>
+      <span class="protocol-value" id="keyLengthValue">--</span>
+    </div>
+
+    <div class="protocol-item">
+      <span class="protocol-key">Integrity</span>
+      <span class="protocol-value" id="integrityValue">--</span>
+    </div>
+
+    <div class="protocol-item">
+      <span class="protocol-key">PRF</span>
+      <span class="protocol-value" id="prfValue">--</span>
+    </div>
+
+    <div class="protocol-item">
+      <span class="protocol-key">DH Group</span>
+      <span class="protocol-value warning" id="dhGroupValue">--</span>
+    </div>
+
+    <div class="protocol-item">
+      <span class="protocol-key">ESP Traffic</span>
+      <span class="protocol-value" id="espTrafficValue">--</span>
+    </div>
+
+  </div>
+
+</div>
+      <!-- Blockchain proof -->
+      <div class="panel chain-panel">
+        <div class="panel-label"> INTEGRITY ANCHOR</div>
+        <div class="chain-status" id="chainStatus">
+          <span class="chain-dot"></span> --
+        </div>
+        <div class="chain-field">
+          <span class="chain-key">tx hash</span>
+          <span class="chain-val mono" id="chainHash">--</span>
+        </div>
+        <div class="chain-field">
+          <span class="chain-key">block</span>
+          <span class="chain-val mono" id="chainBlock">--</span>
+        </div>
+        <div class="chain-note muted" id="chainNote"></div>
+      </div>
+      <!-- ML Verdict -->
+<div class="panel ml-panel">
+
+  <div class="panel-label">ML VERDICT</div>
+
+  <div class="ml-content">
+
+    <div class="ml-main">
+      <div class="ml-classification" id="mlClassification">
+        PENDING
+      </div>
+
+      <div class="ml-description" id="mlNote">
+        ML analysis pending.
+      </div>
+    </div>
+
+    <div class="ml-score">
+      <div class="ml-score-label">CONFIDENCE</div>
+
+      <div class="ml-score-value" id="mlScoreText">
+        0.00
+      </div>
+
+      <div class="ml-bar">
+        <div class="ml-bar-fill" id="mlBarFill"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+      <!-- Vulnerabilities list -->
+      <div class="panel vuln-panel">
+        <div class="panel-label"> PROTOCOL FINDINGS</div>
+        <div class="vuln-list" id="vulnList"></div>
+      </div>
+
+    </div>
+
+    <button id="newScanBtn" class="btn-secondary">&larr; Run Another Analysis</button>
+
+  </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
