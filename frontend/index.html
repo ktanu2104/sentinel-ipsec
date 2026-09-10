@@ -88,6 +88,69 @@
         <div class="panel-label"> FINDINGS BREAKDOWN</div>
         <canvas id="severityChart" height="140"></canvas>
       </div>
+<div class="panel testbed-panel">
+  <div class="panel-label">VPN TESTBED CONFIGURATIONS</div>
+
+  <div class="testbed-table-wrap">
+    <table class="testbed-table">
+      <thead>
+        <tr>
+          <th>MODE</th>
+          <th>ENCRYPTION</th>
+          <th>DH GROUP</th>
+          <th>PFS</th>
+          <th>IP VERSION</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>Tunnel</td>
+          <td>AES-128</td>
+          <td>DH14</td>
+          <td>ON</td>
+          <td>IPv4</td>
+        </tr>
+
+        <tr>
+          <td>Tunnel</td>
+          <td>AES-256</td>
+          <td>DH19</td>
+          <td>ON</td>
+          <td>IPv4</td>
+        </tr>
+
+        <tr>
+          <td>Tunnel</td>
+          <td>AES-GCM-256</td>
+          <td>DH14</td>
+          <td>OFF</td>
+          <td>IPv4</td>
+        </tr>
+
+        <tr>
+          <td>Transport</td>
+          <td>AES-CBC + HMAC</td>
+          <td>DH20</td>
+          <td>ON</td>
+          <td>IPv6</td>
+        </tr>
+
+        <tr>
+          <td>Tunnel</td>
+          <td>AES-CBC + HMAC</td>
+          <td>DH14</td>
+          <td>OFF</td>
+          <td>IPv6</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="testbed-note">
+    Supported VPN security configurations for protocol and security assessment.
+  </div>
+</div>
      <!-- Protocol intelligence -->
 <div class="panel protocol-panel">
 
@@ -183,6 +246,73 @@
       </div>
     </div>
 
+  </div>
+ 
+</div>
+<!-- Security Assessment -->
+<div class="panel assessment-panel">
+
+  <div class="panel-label">SECURITY ASSESSMENT</div>
+
+  <div class="assessment-summary">
+    <div>
+      <span class="assessment-key">Risk</span>
+      <span class="assessment-value" id="assessmentRisk">--</span>
+    </div>
+
+    <div>
+      <span class="assessment-key">Compliance</span>
+      <span class="assessment-value" id="assessmentCompliance">--</span>
+    </div>
+
+    <div>
+      <span class="assessment-key">Status</span>
+      <span class="assessment-value" id="assessmentStatus">--</span>
+    </div>
+
+    <div>
+      <span class="assessment-key">Unknowns</span>
+      <span class="assessment-value" id="assessmentUnknowns">--</span>
+    </div>
+  </div>
+
+  <div class="assessment-grid">
+
+    <div class="assessment-item">
+      <span>PFS</span>
+      <strong id="pfsValue">--</strong>
+    </div>
+
+    <div class="assessment-item">
+      <span>Replay Protection</span>
+      <strong id="replayValue">--</strong>
+    </div>
+
+    <div class="assessment-item">
+      <span>SA Lifetime</span>
+      <strong id="lifetimeValue">--</strong>
+    </div>
+
+    <div class="assessment-item">
+      <span>Authentication</span>
+      <strong id="authValue">--</strong>
+    </div>
+
+    <div class="assessment-item">
+      <span>Metadata Exposure</span>
+      <strong id="metadataValue">--</strong>
+    </div>
+
+  </div>
+
+  <div class="assessment-section">
+    <div class="assessment-heading">THREAT MATRIX</div>
+    <div id="threatList"></div>
+  </div>
+
+  <div class="assessment-section">
+    <div class="assessment-heading">RECOMMENDATIONS</div>
+    <div id="recommendationList"></div>
   </div>
 
 </div>
