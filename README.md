@@ -373,10 +373,4 @@ analysis.
 Only analyze packet captures and infrastructure that you own or have
 explicit permission to test.
 
-## License
 
-Add the license selected for the repository here, for example:
-
-``` text
-MIT License
-```
